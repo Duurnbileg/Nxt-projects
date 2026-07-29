@@ -1,18 +1,19 @@
+import type { Movie } from "@/app/type";
 import { Button } from "@/components/ui/button";
-import MovieCard from "./movieCard";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { MovieCard } from "./movieCard";
 
-export default function MovieList({ genre, seeMoreShow, movies }: { genre: string, seeMoreShow: boolean, movies: Movie[] }) {
+export const MovieList = ({ genre, seeMoreShow, movies, genreLink }: { genre: string, seeMoreShow: boolean, movies: Movie[], genreLink: string }) => {
 
     return (
-        <div className="w-full flex flex-col justify-center px-20">
-            <div className="w-full flex items-center justify-between mb-4">
+        <div className="w-full flex flex-col justify-center">
+            <div className="w-fill flex items-center justify-between mb-4">
                 <p className="text-2xl font-bold">{genre}</p>
                 {seeMoreShow &&
                     <div className="flex items-center">
                         <Button variant="ghost" size="sm" className="ml-4">
-                            <Link href={`/${genre.toLowerCase()}`} className="flex items-center gap-1">
+                            <Link href={`/${genreLink}`} className="flex items-center gap-1">
                                 <p>See more</p>
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
@@ -20,10 +21,10 @@ export default function MovieList({ genre, seeMoreShow, movies }: { genre: strin
                     </div>
                 }
             </div>
-            <div className="w-full flex flex-wrap gap-8 justify-center ">
+            <div className="w-full flex flex-wrap gap-6 justify-center ">
                 {
                     movies.slice(0, 10).map((item) => (
-                        <MovieCard key={item.id} movie={item} />
+                        <MovieCard key={item.id} movies={item} />
                     ))
                 }
             </div>

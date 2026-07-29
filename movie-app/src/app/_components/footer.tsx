@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Footer() {
+export const Footer = () => {
     return (
         <footer className="w-full max-w-[1520px] h-[280px] bg-indigo-700 flex items-center justify-center mt-25 px-16">
             <div className="w-full h-[160px] flex items-start justify-between gap-4">

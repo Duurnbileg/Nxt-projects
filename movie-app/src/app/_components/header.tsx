@@ -1,11 +1,12 @@
+"use client"
 import Image from "next/image"
-import DropDown from "./dropDownBtn";
 import { Button } from "@/components/ui/button";
 import { Moon, Search } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import Link from "next/link";
+import { DropDown } from "./dropDownBtn";
 
-export default function Header() {
+export const Header = () => {
     return (
         <header className="w-full max-w-[1520px] flex justify-between px-16 py-3">
             <Link href="/" className="flex items-center gap-2">

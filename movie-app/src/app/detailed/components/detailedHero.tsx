@@ -5,8 +5,8 @@ import Image from "next/image";
 export const DetailedHero = ({ movie }: { movie?: Movie }) => {
 
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex justify-between">
+        <div className="flex flex-col gap-6 mt-4 w-full">
+            <div className="flex justify-between w-full">
                 <div className="flex flex-col gap-1">
                     <div>
                         <h1 className="text-4xl font-bold">{movie?.title}</h1>
@@ -40,7 +40,7 @@ export const DetailedHero = ({ movie }: { movie?: Movie }) => {
                     loading="eager"
                     width={290}
                     height={430}
-                    className="w-full w-[290px] h-[430px] "
+                    className="w-[290px] h-[430px] "
                 ></Image>
                 <Image
                     src={`https://image.tmdb.org/t/p/w500${movie?.backdrop_path}`}
@@ -48,7 +48,7 @@ export const DetailedHero = ({ movie }: { movie?: Movie }) => {
                     loading="eager"
                     width={290}
                     height={430}
-                    className="w-full w-[290px] h-[430px] "
+                    className="w-full h-[430px] "
                 ></Image>
             </div>
         </div>

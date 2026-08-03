@@ -1,7 +1,7 @@
 import type { Movie } from "@/app/type";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MovieCard } from "./movieCard";
 
 export const MovieList = ({ genre, seeMoreShow, movies, genreLink }: { genre: string, seeMoreShow: boolean, movies: Movie[], genreLink: string }) => {

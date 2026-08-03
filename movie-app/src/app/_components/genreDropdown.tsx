@@ -1,11 +1,10 @@
 "use client"
-
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { InputGroupButton } from "@/components/ui/input-group";
 import { Separator } from "@/components/ui/separator";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const API_KEY = "c57b8556952c6312699fd719663951e1"
@@ -14,7 +13,7 @@ const GENRE_ENDPOINT = "/genre/movie/list?language=en"
 
 const genreApiUrl = `${BASE_URL}${GENRE_ENDPOINT}&api_key=${API_KEY}`
 
-export const DropDown = () => {
+export const GenreDropDown = () => {
     const [genreList, setGenreList] = useState<Genre[]>([])
 
     const fetchGenreList = async () => {
@@ -42,14 +41,17 @@ export const DropDown = () => {
                 </div>
                 <Separator />
                 <DropdownMenuGroup className="flex flex-wrap gap-3   ">
-                    {genreList?.map((item, index) => (
-                        <InputGroupButton key={index} className="bg-white text-black text-xs font-semibold border-gray-300 rounded-4xl">
-                            {item.name}
-                            <ChevronRight />
-                        </InputGroupButton>
+                    {genreList?.map((item) => (
+                        <Link key={item.id} href={`/sameGenreMovies/${item.id}?name=${item.name}`} className="flex items-center">
+                            <InputGroupButton className="bg-white text-black text-xs font-semibold border-gray-300 rounded-4xl">
+                                {item.name}
+                                <ChevronRight />
+                            </InputGroupButton>
+                        </Link>
                     ))}
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
+
     );
 }

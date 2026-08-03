@@ -1,5 +1,6 @@
 export type Genre = {
     name: string
+    id: number
 }
 
 export type Genres = Genre
@@ -15,6 +16,8 @@ export type Movie = {
     vote_count: number
     genres: Genre[]
     runtime: number
+    total_result: number,
+    total_pages: number
 }
 
 export type Cast = {

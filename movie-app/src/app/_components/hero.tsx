@@ -23,6 +23,7 @@ export const Hero = ({ movies }: { movies: Movie[] }) => {
                                 className="object-cover"
                                 loading="eager"
                             />
+                            <div className="w-full h-full bg-black opacity-40 absolute"></div>
                             <div className="absolute inset-0 z-10 flex items-center">
                                 <div className="ml-40 max-w-md text-white">
                                     <p>Now Playing</p>
@@ -31,9 +32,9 @@ export const Hero = ({ movies }: { movies: Movie[] }) => {
                                     </h1>
                                     <div className="flex items-center gap-2 mt-4">
                                         <Star className="fill-yellow-400 text-yellow-400 w-5 h-5" />
-                                        <p>
+                                        <p className="text-2xl font-semibold">
                                             {item.vote_average.toFixed(1)}
-                                            <span className="text-gray-300"> / 10</span>
+                                            <span className="text-gray-300 text-base"> / 10</span>
                                         </p>
                                     </div>
                                     <p className="leading-relaxed mt-4">

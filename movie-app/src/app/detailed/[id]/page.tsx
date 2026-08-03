@@ -1,15 +1,16 @@
 "use client"
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Link } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DetailedContent } from "../components/detailedContent";
 import { Header } from "@/app/_components/header";
 import { DetailedHero } from "../components/detailedHero";
-import { MovieCard } from "@/app/_components/movieCard";
 import { Footer } from "@/app/_components/footer";
 import { Credit, Movie } from "@/app/type";
+import { Related } from "../components/related";
 
 const API_KEY = "c57b8556952c6312699fd719663951e1"
 const BASE_URL = "https://api.themoviedb.org/3"
@@ -24,19 +25,19 @@ export default function Detailed() {
         async function getMovie() {
             const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`)
             const data = await response.json()
-            console.log("dasda", data);
             setDetailedMovie(data);
         } getMovie();
     }, [id])
 
     useEffect(() => {
-        async function getSimilarMovies() {
+        async function getRelatedMovies() {
             const response = await fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`);
             const data = await response.json();
+            console.log(data);
             setRelatedMovies(data.results);
         }
-        getSimilarMovies();
-    }, [id]);
+        getRelatedMovies();
+    }, []);
 
     useEffect(() => {
         async function getCredits() {
@@ -49,8 +50,8 @@ export default function Detailed() {
     }, [id])
 
     return (
-        <main className="w-full flex items-center justify-center">
-            <div className="w-full max-w-380 flex flex-col items-center">
+        <main className="w-full max-w-[1520px] flex flex-col items-center justify-center">
+            <div className="w-full flex flex-col items-center">
                 <Header />
                 <div className=" flex flex-col items-start justify-center w-270 gap-8">
                     <DetailedHero movie={detailedMovie} />
@@ -59,19 +60,15 @@ export default function Detailed() {
                 <div className="w-full flex flex-col items-center justify-center gap-2">
                     <div className="flex items-center justify-between w-270 mt-8">
                         <p className="text-2xl font-semibold mb-4">More like this</p>
-                        <div className="flex items-center">
-                            <Button variant="ghost" size="sm" className="ml-4">
+                        <Button variant="ghost" size="sm" className="ml-4">
+                            <Link href={`/relatedMovies/${id}`} className="flex items-center">
                                 <p>See more</p>
-                                <ArrowRight className="w-4 h-4" />
-                            </Button>
-                        </div>
+                                <ChevronRight className="w-4 h-4" />
+                            </Link>
+                        </Button>
                     </div>
                     <div className="w-full flex flex-wrap gap-8 justify-center">
-                        {
-                            relatedMovies.slice(0, 5).map((item) => (
-                                <MovieCard key={item.id} movies={item} variant="small" />
-                            ))
-                        }
+                        <Related movie={relatedMovies} />
                     </div>
                 </div>
                 <Footer />

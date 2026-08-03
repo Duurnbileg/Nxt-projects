@@ -46,7 +46,7 @@ export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Cre
                 <div className="flex gap-13">
                     <p className="font-bold w-[80px]">Stars</p>
                     <div className="flex gap-4">
-                        {stars?.slice(0, 3)?.map((item, index) => {
+                        {stars?.slice(0, 4)?.map((item, index) => {
                             return (
                                 <span key={index}>{item.name}</span>
                             )

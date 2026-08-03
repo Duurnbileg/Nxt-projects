@@ -12,7 +12,6 @@ const BASE_URL = "https://api.themoviedb.org/3"
 const UPCOMING_ENDPOINT = "/movie/upcoming?language=en-US&page=1"
 const TOPRATED_ENDPOINT = "/movie/top_rated?language=en-US&page=1"
 const POPULAR_ENDPOINT = "/movie/popular?language=en-US&page=1"
-const GENRE_ENDPOINT = "/genre/movie/list?language=en"
 
 const upcomingApiUrl = `${BASE_URL}${UPCOMING_ENDPOINT}&api_key=${API_KEY}`
 const topRatedApiUrl = `${BASE_URL}${TOPRATED_ENDPOINT}&api_key=${API_KEY}`

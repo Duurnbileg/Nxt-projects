@@ -34,6 +34,10 @@ export const Paginate = ({
         }
     }
 
+    const handlePage = (newPage: number) => {
+        setPage(newPage)
+    }
+
     return (
         <Pagination>
             <PaginationContent>
@@ -41,61 +45,162 @@ export const Paginate = ({
                     <PaginationPrevious
                         href="#"
                         onClick={(e) => {
+                            e.preventDefault()
                             handlePrevious()
                         }}
                     />
                 </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        href="#"
-                        isActive={page === 1}
-                        onClick={(e) => {
-                            setPage(1)
-                        }}
-                    >
-                        1
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        href="#"
-                        isActive={page === 2}
-                        onClick={(e) => {
-                            setPage(2)
-                        }}
-                    >
-                        2
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        href="#"
-                        isActive={page === 3}
-                        onClick={(e) => {
-                            setPage(3)
-                        }}
-                    >
-                        3
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        href="#"
-                        isActive={page === totalPages}
-                        onClick={(e) => {
-                            setPage(totalPages)
-                        }}
-                    >
-                        {totalPages}
-                    </PaginationLink>
-                </PaginationItem>
+                {page <= 4 && (
+                    <>
+                        {[1, 2, 3, 4, 5]
+                            .filter((item) => item <= totalPages)
+                            .map((item) => (
+                                <PaginationItem key={item}>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={page === item}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePage(item)
+                                        }}
+                                    >
+                                        {item}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            ))}
+
+                        {totalPages > 5 && (
+                            <>
+                                <PaginationItem>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
+
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={page === totalPages}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handlePage(totalPages)
+                                        }}
+                                    >
+                                        {totalPages}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            </>
+                        )}
+                    </>
+                )}
+                {page > 4 && page < totalPages - 3 && (
+                    <>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePage(1)
+                                }}
+                            >
+                                1
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePage(page - 1)
+                                }}
+                            >
+                                {page - 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                isActive
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                }}
+                            >
+                                {page}
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePage(page + 1)
+                                }}
+                            >
+                                {page + 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePage(totalPages)
+                                }}
+                            >
+                                {totalPages}
+                            </PaginationLink>
+                        </PaginationItem>
+                    </>
+                )}
+                {page >= totalPages - 3 && totalPages > 5 && (
+                    <>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handlePage(1)
+                                }}
+                            >
+                                1
+                            </PaginationLink>
+                        </PaginationItem>
+
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+
+                        {[
+                            totalPages - 4,
+                            totalPages - 3,
+                            totalPages - 2,
+                            totalPages - 1,
+                            totalPages,
+                        ].map((item) => (
+                            <PaginationItem key={item}>
+                                <PaginationLink
+                                    href="#"
+                                    isActive={page === item}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        handlePage(item)
+                                    }}
+                                >
+                                    {item}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))}
+                    </>
+                )}
                 <PaginationItem>
                     <PaginationNext
                         href="#"
                         onClick={(e) => {
+                            e.preventDefault()
                             handleNext()
                         }}
                     />

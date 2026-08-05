@@ -21,9 +21,10 @@ export const Header = () => {
                 <Image
                     src="/Logo.png"
                     alt="logo"
-                    width={92}
+                    width={88}
                     height={20}
-                    className="object-contain ab"
+                    className="object-contain"
+                    loading="eager"
                 ></Image>
             </Link>
             <SearchInput />

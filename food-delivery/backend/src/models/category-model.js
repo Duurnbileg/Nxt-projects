@@ -1,16 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
+const ObjectId = Schema.ObjectId
+
 const CategorySchema = new Schema({
-    Objectid: {
-        type: String
-    },
-    categoryName: {
-        type: String,
-        required: true,
-        trim: true,
-    },
+    id: ObjectId,
+    categoryName: String,
     createdAt: { type: Date, required: true, default: Date.now },
     updatedAt: { type: Date, required: true, default: Date.now }
 },);
 
-export const categoryModel = mongoose.model("Category", CategorySchema);
+export const categoryModel = mongoose.model("category", CategorySchema);

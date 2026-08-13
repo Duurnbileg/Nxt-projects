@@ -1,46 +1,29 @@
 import mongoose, { Schema } from "mongoose";
 
+const ObjectId = Schema.ObjectId
+
 const OrderItemSchema = new Schema({
     food: {
-        type: Schema.Types.ObjectId,
-        ref: "Food",
-        required: true,
+        type: ObjectId,
+        ref: "food",
     },
-    quantity: {
-        type: Number,
-        required: true,
-    },
+    quantity: Number,
 });
 
 const OrderSchema = new Schema({
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+        type: ObjectId,
+        ref: "user",
     },
-    totalPrice: {
-        type: Number,
-        required: false,
-    },
-    foodOrderItems: {
-        type: [OrderItemSchema],
-        required: false,
-    },
+    totalPrice: Number,
+    foodOrderItems: [OrderItemSchema],
     status: {
         type: String,
         enum: ["PENDING", "CANCELED", "DELIVERED"],
         default: "PENDING",
     },
-    createdAt: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
+    createdAt: { type: Date, required: true, default: Date.now },
+    updatedAt: { type: Date, required: true, default: Date.now }
 });
 
 export const orderModel = mongoose.model("Order", OrderSchema);

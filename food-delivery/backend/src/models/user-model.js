@@ -3,19 +3,11 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema({
     email: {
         type: String,
-        required: true,
-        unique: true,
+        ref: "user",
     },
-    password: {
-        type: String,
-        required: false,
-    },
-    phoneNumber: {
-        type: String,
-    },
-    address: {
-        type: String,
-    },
+    password: String,
+    phoneNumber: String,
+    address: String,
     role: {
         type: String,
         enum: ["USER", "ADMIN"],
@@ -25,4 +17,4 @@ const UserSchema = new Schema({
     updatedAt: { type: Date, required: true, default: Date.now }
 },);
 
-export const userModel = mongoose.model("User", UserSchema);
+export const userModel = mongoose.model("user", UserSchema);

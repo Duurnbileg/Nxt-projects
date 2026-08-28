@@ -10,5 +10,5 @@ export const foodRouter = express.Router()
 foodRouter.get("/", getFood)
 foodRouter.post("/", createFood)
 foodRouter.delete("/", deleteFood)
-foodRouter.put("/", updateFood)
-foodRouter.get("/", getFoodByCategory)
+foodRouter.put("/:id", updateFood);
+foodRouter.get("/category/:category", getFoodByCategory);

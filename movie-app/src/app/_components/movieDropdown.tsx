@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { ChevronRight, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -27,7 +26,7 @@ export const MovieDropdown = ({ movie, searchValue }: { movie: Movie[], searchVa
                                 className="object-contain ab rounded-md w-fit"
                             ></Image>
                             <div className="w-full text-black flex flex-col justify-between h-[88px]">
-                                <h1 className="text-lg font-semibold leading-6 w-[300px]">{item.title}</h1>
+                                <h1 className="text-base font-semibold leading-6">{item.title}</h1>
                                 <div className="flex justify-between">
                                     <div className="flex text-base items-center gap-1">
                                         <Star className="fill-yellow-400 text-yellow-400 w-4 h-4" />

@@ -4,11 +4,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MovieCard } from "./movieCard";
 
-export const MovieList = ({ genre, seeMoreShow, movies, genreLink }: { genre: string, seeMoreShow: boolean, movies: Movie[], genreLink: string }) => {
+export const MovieList = ({ genre, seeMoreShow, movie, genreLink }: { genre: string, seeMoreShow: boolean, movie: Movie[], genreLink: string }) => {
 
     return (
         <div className="w-full flex flex-col justify-center">
-            <div className="w-fill flex items-center justify-between mb-4">
+            <div className="w-full flex items-center justify-between mb-4">
                 <p className="text-2xl font-bold">{genre}</p>
                 {seeMoreShow &&
                     <div className="flex items-center">
@@ -21,9 +21,9 @@ export const MovieList = ({ genre, seeMoreShow, movies, genreLink }: { genre: st
                     </div>
                 }
             </div>
-            <div className="w-full flex flex-wrap gap-6 justify-center ">
+            <div className="w-full grid grid-cols-5 gap-6 justify-center max-[920px]:grid-cols-3 max-[410px]:grid-cols-2">
                 {
-                    movies.slice(0, 10).map((item) => (
+                    movie.slice(0, 10).map((item) => (
                         <MovieCard key={item.id} movies={item} />
                     ))
                 }

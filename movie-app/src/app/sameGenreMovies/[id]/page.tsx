@@ -32,8 +32,6 @@ export default function SameGenreMovies() {
         async function getRelatedMovies() {
             const response = await fetch(`${BASE_URL}/discover/movie?language=en&with_genres=${id}&page=${page}&api_key=${API_KEY}`);
             const data = await response.json();
-            console.log(data);
-
             setRelatedMovies(data.results);
             setTotalPages(data.total_pages)
             setTotalResult(data.total_results)
@@ -54,42 +52,61 @@ export default function SameGenreMovies() {
     }, [id])
 
     return (
-        <main className="flex flex-col items-center justify-center">
+        <main className="flex flex-col items-center">
             <Header />
-            <div className="flex flex-col gap-4 px-20 mt-4">
-                <div className="flex flex-col gap-2">
-                    <p className="text-2xl font-bold">{genreName}</p>
-                    <p className="text-lg">Search result for <span className="font-bold text-xl">"{totalResult}"</span></p>
-                </div>
-                <div className="w-full flex gap-8" >
-                    <div className="grid grid-cols-5 gap-4 items-center">
-                        {
-                            relatedMovies.map((item) => (
-                                <MovieCard key={item.id} movies={item} variant="small" />
-                            ))
-                        }
-                    </div>
-                    <div className="w-[360px] flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
-                            <h1 className="text-2xl font-bold">Genres</h1>
-                            <p>See lists of movies by genre</p>
+            <div className="mt-4 flex w-full flex-col gap-8 px-4 sm:px-6 md:px-10 lg:flex-row lg:px-16 xl:px-20">
+                <div className="min-w-0 w-full flex-1">
+                    <div className="flex flex-col gap-6">
+                        <div className="flex flex-col gap-2">
+                            <p className="text-2xl font-bold">
+                                {genreName}
+                            </p>
+                            <p className="text-base sm:text-lg">
+                                Search result for{" "}
+                                <span className="text-lg font-bold sm:text-xl">
+                                    "{totalResult}"
+                                </span>
+                            </p>
                         </div>
-                        <Separator />
-                        <div className="w-full flex flex-wrap gap-3   ">
-                            {genreList?.map((item) => (
-                                <Link key={item.id} href={`/sameGenreMovies/${item.id}?name=${item.name}`} className="flex items-center">
-                                    <InputGroupButton className="bg-white text-black text-xs font-semibold border-gray-300 rounded-4xl">
-                                        {item.name}
-                                        <ChevronRight />
-                                    </InputGroupButton>
-                                </Link>
+                        <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5">
+                            {relatedMovies.map((item) => (
+                                <MovieCard
+                                    key={item.id}
+                                    movies={item}
+                                />
                             ))}
                         </div>
+                        <Paginate
+                            page={page}
+                            setPage={setPage}
+                            totalPages={totalPages}
+                        />
                     </div>
                 </div>
-                <Paginate page={page} setPage={setPage} totalPages={totalPages} />
+                <div className="w-full shrink-0 lg:w-[300px] xl:w-[360px]">
+                    <h1 className="text-2xl font-bold">
+                        Genres
+                    </h1>
+                    <p>
+                        See lists of movies by genre
+                    </p>
+                    <Separator className="my-4" />
+                    <div className="flex flex-wrap gap-3">
+                        {genreList.map((item) => (
+                            <Link
+                                key={item.id}
+                                href={`/sameGenreMovies/${item.id}?name=${item.name}`}
+                            >
+                                <InputGroupButton className="rounded-full border-gray-300 bg-white text-xs font-semibold text-black">
+                                    {item.name}
+                                    <ChevronRight className="size-4" />
+                                </InputGroupButton>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
             </div>
             <Footer />
-        </main >
+        </main>
     );
 }

@@ -51,15 +51,15 @@ export default function Detailed() {
 
     return (
         <main className="w-full max-w-[1520px] flex flex-col items-center justify-center">
-            <div className="w-full flex flex-col items-center">
-                <Header />
-                <div className=" flex flex-col items-start justify-center w-270 gap-8">
+            <Header />
+            <div className="w-full max-w-[1260px] flex flex-col items-center">
+                <div className=" flex flex-col items-start justify-center px-4 gap-8">
                     <DetailedHero movie={detailedMovie} />
                     <DetailedContent movie={detailedMovie} credit={movieCredit} />
                 </div>
                 <div className="w-full flex flex-col items-center justify-center gap-2">
-                    <div className="flex items-center justify-between w-270 mt-8">
-                        <p className="text-2xl font-semibold mb-4">More like this</p>
+                    <div className="flex items-center justify-between w-full px-4 mt-8">
+                        <p className="text-2xl font-semibold mb-4 max-sm:text-lg">More like this</p>
                         <Button variant="ghost" size="sm" className="ml-4">
                             <Link href={`/relatedMovies/${id}`} className="flex items-center">
                                 <p>See more</p>
@@ -67,7 +67,7 @@ export default function Detailed() {
                             </Link>
                         </Button>
                     </div>
-                    <div className="w-full flex flex-wrap gap-8 justify-center">
+                    <div className="w-full gap-8 justify-center">
                         <Related movie={relatedMovies} />
                     </div>
                 </div>

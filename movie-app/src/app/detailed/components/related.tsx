@@ -7,14 +7,18 @@ import { Paginate } from "@/app/_components/pagination";
 export const Related = ({ movie }: { movie: Movie[] }) => {
 
     return (
-        <main className="flex flex-col items-center justify-center">
-            <div className="flex flex-wrap gap-6 items-center justify-center">
-                {
-                    movie.slice(0, 5).map((item, index) => (
-                        <MovieCard key={index} movies={item} variant="small" />
-                    ))
-                }
-            </div>
-        </main >
+        <main className="grid grid-cols-2 items-center justify-center gap-5 px-4 sm:grid-cols-3 lg:grid-cols-5">
+            {movie?.slice(0, 5).map((item, index) => (
+                <div
+                    key={item.id}
+                    className={index >= 2 ? "hidden sm:block" : ""}
+                >
+                    <MovieCard
+                        movies={item}
+                        variant="small"
+                    />
+                </div>
+            ))}
+        </main>
     );
 }

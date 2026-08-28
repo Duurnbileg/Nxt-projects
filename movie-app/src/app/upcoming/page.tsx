@@ -30,11 +30,11 @@ export default function Upcoming() {
     }, [page])
 
     return (
-        <main className="flex flex-col items-center justify-center">
+        <main className="w-full max-w-[1520px] flex flex-col items-center justify-center">
             <Header />
-            <div className="w-[1440px] flex flex-col items-start justify-center gap-6 mt-4 px-20">
+            <div className="w-full flex flex-col items-start justify-center gap-6 mt-4 px-20 max-[920px]:px-10 max-[410px]:px-4">
                 <p className="text-2xl font-bold">Upcoming Movies</p>
-                <div className="flex flex-wrap gap-6 items-center justify-start">
+                <div className="w-full grid grid-cols-5 gap-4 justify-center max-[920px]:grid-cols-3 max-[410px]:grid-cols-2">
                     {
                         upComingMovies.map((item) => (
                             <MovieCard key={item.id} movies={item} />

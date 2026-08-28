@@ -1,7 +1,6 @@
 "use client"
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { GenreDropDown } from "./genreDropdown"
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import { MovieDropdown } from "./movieDropdown"
@@ -21,6 +20,14 @@ export const SearchInput = () => {
         setSearchData(data.results)
     }
 
+    const handleKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (e.key === "Enter") {
+            fetchSearchMovie()
+        }
+    }
+
     useEffect(() => {
         const timer = setTimeout(() => {
             if (searchValue) {
@@ -31,26 +38,24 @@ export const SearchInput = () => {
                 fetchSearchMovie()
             };
         }, 500);
-
         return () => clearTimeout(timer)
     }, [searchValue])
 
     return (
-        <div className="flex gap-2 relative">
-            <GenreDropDown />
-            <div className="relative ">
-                <InputGroup className="w-[500px]">
-                    <InputGroupInput
-                        placeholder="Search..."
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                    <InputGroupAddon>
-                        <Search />
-                    </InputGroupAddon>
-                    <MovieDropdown movie={searchData} searchValue={searchValue} />
-                </InputGroup>
-            </div>
-        </div>
+        <InputGroup className="w-full max-w-[600px]">
+            <InputGroupInput
+                placeholder="Search..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+            />
+            <InputGroupAddon>
+                <Search />
+            </InputGroupAddon>
+            <MovieDropdown
+                movie={searchData}
+                searchValue={searchValue}
+            />
+        </InputGroup>
     )
 }

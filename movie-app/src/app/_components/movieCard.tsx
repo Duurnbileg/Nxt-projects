@@ -5,33 +5,36 @@ import Link from "next/link";
 
 export const MovieCard = ({ movies, variant = "default" }: { movies: Movie, variant?: "default" | "small" }) => {
 
-    const isSmall = variant === "small";
-
     return (
-        <Link href={`/detailed/${movies.id}`}>
-            <div className={`
-                relative flex flex-col items-center justify-between text-white bg-zinc-600 rounded-md overflow-hidden
-                ${isSmall ? "w-[190px] h-[372px]" : "w-[220px] h-[440px]"}
-            `}>
-                <Image
-                    src={`https://image.tmdb.org/t/p/w500${movies.poster_path}`}
-                    alt="hero"
-                    loading="eager"
-                    width={230}
-                    height={340}
-                    className={`
-                        ${isSmall ? "h-[280px] object-cover" : "w-full h-[340px] object-cover"}
-                    `}
-                />
-                <div className="flex flex-col h-full w-full p-3 items-start text-white gap-1">
-                    <div className="flex text-base items-center gap-1">
-                        <Star className="fill-yellow-400 text-yellow-400 w-4 h-4" />
-                        <p className="text-base ">{movies.vote_average.toFixed(1)} <span className="text-sm text-gray-600"> / 10</span></p>
-                    </div>
-                    <div className="w-full h-full">
-                        <h1 className="text-base leading-6">{movies.title}</h1>
-                    </div>
+        <Link
+            href={`/detailed/${movies.id}`}
+            className="block w-full"
+        >
+                <div className="flex w-full flex-col overflow-hidden rounded-md bg-zinc-600 text-white">
+                    <div className="relative aspect-2/3 w-full">
+                    <Image
+                        src={`https://image.tmdb.org/t/p/w500${movies.poster_path}`}
+                        alt={movies.title}
+                        fill
+                        className="object-cover"
+                    />
                 </div>
+                <div className="flex min-h-19 flex-col gap-1 p-2 sm:min-h-22 sm:p-3">
+                    <div className="flex items-center gap-1">
+                        <Star className="h-3.5 w-3.5 shrink-0 fill-yellow-400 text-yellow-400 sm:h-4 sm:w-4" />
+                        <p className="text-sm sm:text-base">
+                            {movies.vote_average.toFixed(1)}
+
+                            <span className="text-xs text-gray-400 sm:text-sm">
+                                {" "} / 10
+                            </span>
+                        </p>
+                    </div>
+                    <h1 className="line-clamp-2 text-sm leading-5 sm:text-base sm:leading-6">
+                        {movies.title}
+                    </h1>
+                </div>
+
             </div>
         </Link>
     );

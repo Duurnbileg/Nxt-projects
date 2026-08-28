@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export const Footer = () => {
     return (
-        <footer className="w-full max-w-[1520px] h-[280px] flex items-center justify-center mt-25 px-16">
-            <div className="w-full h-[160px] flex items-start justify-between gap-4">
+        <footer className="w-full max-w-[1520px] h-[280px] max-sm:h-auto flex items-center justify-center mt-25 px-16 max-sm:px-6 max-sm:py-10 max-sm:flex-col max-sm:items-start max-sm:gap-8">
+            <div className="w-full h-[160px] max-sm:h-auto flex items-start justify-between gap-4">
                 <div className="flex flex-col items-start justify-start gap-4">
                     <Image
                         src="/Logo.png"
@@ -12,10 +12,10 @@ export const Footer = () => {
                         height={20}
                         className="object-contain"
                     ></Image>
-                    <p className=" text-sm">© 2024 Movie Z. All Rights Reserved.</p>
+                    <p className=" text-sm">© 2026 Movie App. All Rights Reserved.</p>
                 </div>
             </div>
-            <div className="w-[910px] h-[160px] flex items-center justify-between gap-4">
+            <div className="w-[910px] max-w-full h-[160px] max-sm:h-auto flex items-center justify-between gap-4 max-sm:flex-col max-sm:items-start">
                 <div className="h-full flex flex-col items-start justify-start gap-4">
                     <p className="text-sm">Contact Information</p>
                     <p className="text-sm">Email: support@moviez.com</p>

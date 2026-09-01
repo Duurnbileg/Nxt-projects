@@ -6,7 +6,7 @@ export const Footer = ({ texts }: { texts: string[] }) => {
 
     return (
         <main className="w-full max-w-380 py-20 bg-black">
-            <div className="bg-red-400 p-10 flex gap-8">
+            <div className="bg-red-400 p-8 flex gap-8">
                 {texts.map((item, index) => (
                     <p
                         key={index}
@@ -16,13 +16,14 @@ export const Footer = ({ texts }: { texts: string[] }) => {
                     </p>
                 ))}
             </div>
-            <div className="w-full py-20 px-40 flex justify-between">
+            <div className="w-full py-20 px-40 flex justify-between items-start">
                 <Image
                     src="/Navigation/footer-logo.png"
                     alt="footer logo"
                     width={80}
                     height={80}
                     loading="eager"
+                    className="object-contain"
                 />
                 <div className="flex gap-8">
                     <div className="flex flex-col">

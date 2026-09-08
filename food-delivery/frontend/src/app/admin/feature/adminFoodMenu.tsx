@@ -25,7 +25,10 @@ export const AdminFoodMenu = () => {
     }, [])
     return (
         <main>
-
+            <div>
+                <p>Dishes category</p>
+                <div></div>
+            </div>
         </main>
     )
 }

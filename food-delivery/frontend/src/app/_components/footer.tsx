@@ -1,24 +1,26 @@
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import Image from "next/image"
 
 export const Footer = ({ texts }: { texts: string[] }) => {
+    const marqueeItems = [...texts, ...texts]
 
     return (
-        <main className="w-full max-w-380 py-20 bg-black">
-            <div className="bg-red-400 p-8 flex gap-8">
-                {texts.map((item, index) => (
-                    <p
-                        key={index}
-                        className="text-white text-3xl font-bold whitespace-nowrap"
-                    >
-                        {item}
-                    </p>
-                ))}
+        <footer className="w-full overflow-hidden py-20 bg-black">
+            <div className="overflow-hidden bg-red-400 py-8">
+                <div className="flex w-max animate-marquee gap-8">
+                    {marqueeItems.map((item, index) => (
+                        <p
+                            key={index}
+                            className="text-white text-3xl font-bold whitespace-nowrap"
+                        >
+                            {item}
+                        </p>
+                    ))}
+                </div>
             </div>
-            <div className="w-full py-20 px-40 flex justify-between items-start">
+            <div className="w-full py-20 px-6 sm:px-12 lg:px-40 flex flex-wrap justify-between items-start gap-8">
                 <Image
-                    src="/Navigation/footer-logo.png"
+                    src="/footer-logo.png"
                     alt="footer logo"
                     width={80}
                     height={80}
@@ -26,9 +28,9 @@ export const Footer = ({ texts }: { texts: string[] }) => {
                     className="object-contain"
                 />
                 <div className="flex gap-8">
-                    <div className="flex flex-col">
-                        <Button>NOMNOM</Button>
-                        <Button>Home</Button>
+                    <div className="flex flex-col text-white">
+                        <Button variant="ghost" className="bg-none hover:bg-zinc-900 hover:text-white">NOMNOM</Button>
+                        <Button variant="ghost" className="bg-none hover:bg-zinc-900 hover:text-white">Home</Button>
                         <Button>Contact us</Button>
                         <Button>Delivery zone</Button>
                     </div>
@@ -70,6 +72,6 @@ export const Footer = ({ texts }: { texts: string[] }) => {
                     </div>
                 </div>
             </div>
-        </main>
+        </footer>
     )
 }

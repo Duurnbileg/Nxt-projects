@@ -16,7 +16,7 @@ export const AdminSidebar = () => {
         <div className="flex flex-col items-center justify-start p-4 gap-8 bg-white h-screen">
             <div className="flex gap-2">
                 <Image
-                    src="/Navigation/Logo.png"
+                    src="/Logo.png"
                     alt="Description"
                     width={48}
                     height={48}

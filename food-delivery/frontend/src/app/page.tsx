@@ -1,7 +1,7 @@
 import { FoodList } from "./_components/foodList";
-import { Header } from "./feature/header";
+import { Header } from "./_components/header";
 import { Hero } from "./_components/hero";
-import { Footer } from "./feature/footer";
+import { Footer } from "./_components/footer";
 
 const list = [1, 2, 3, 4]
 

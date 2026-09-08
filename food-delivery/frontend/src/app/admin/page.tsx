@@ -1,9 +1,15 @@
 "use client"
+import { useState } from "react"
 import { AdminOrderTable } from "./feature/adminOrderTable"
 import { AdminSidebar } from "./feature/adminSidebar"
 
 export default function Login() {
 
+    const [step, setStep] = useState(1)
+
+    const handleNext = () => setStep(step + 1)
+    const handleBack = () => setStep(step - 1)
+ 
     return (
         <main className="w-full max-w-380 h-full flex gap-10 items-start justify-center bg-accent">
             <AdminSidebar />

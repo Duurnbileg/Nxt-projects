@@ -1,17 +1,16 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CartFoodCart } from "./cartFoodCard"
+import { CartFoodCard } from "./cartFoodCard"
 import { CartOrder } from "./cartOrder"
 
 export const CartTabs = () => {
     return (
         <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="w-full">
-                <TabsTrigger value="cart">Cart</TabsTrigger>
-                <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsList className="w-full bg-white">
+                <TabsTrigger value="cart" className="data-[state=active]:bg-red-400 data-[state=active]:text-white">Cart</TabsTrigger>
+                <TabsTrigger value="orders" className="data-[state=active]:bg-red-400 data-[state=active]:text-white">Orders</TabsTrigger>
             </TabsList>
             <TabsContent value="cart">
-                <CartFoodCart />
+                <CartFoodCard />
             </TabsContent>
             <TabsContent value="orders">
                 <CartOrder />

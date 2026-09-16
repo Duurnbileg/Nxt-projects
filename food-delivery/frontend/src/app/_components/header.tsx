@@ -2,9 +2,9 @@
 import { ShoppingCart, User } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { LocationDialog } from "../_components/locationDialog"
+import { LocationDialog } from "./_user/locationDialog"
 import { useState } from "react"
-import { FoodSheet } from "./foodSheet"
+import { CardDrawer } from "./cart/cardDrawer"
 
 export const Header = () => {
     const [open, setOpen] = useState(false)
@@ -26,7 +26,7 @@ export const Header = () => {
                 <Button className="rounded-full bg-red-400 hover:bg-red-300">
                     <User />
                 </Button>
-                <FoodSheet open={open} setOpen={setOpen} />
+                <CardDrawer open={open} setOpen={setOpen} />
             </div>
         </header>
     )

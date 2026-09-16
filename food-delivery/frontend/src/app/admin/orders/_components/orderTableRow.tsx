@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TableCell, TableRow, } from "@/components/ui/table";
 import { ChevronDown, ChevronUp, } from "lucide-react";
 import { useState } from "react";
-import { OrderFoodRow } from "./orderFoodRow";
 import { OrderStatus } from "./orderStatus";
 
 export const OrderTableRow = ({ order }: { order: any }) => {
@@ -51,13 +50,6 @@ export const OrderTableRow = ({ order }: { order: any }) => {
                     <OrderStatus status={order.status} />
                 </TableCell>
             </TableRow>
-            {isOpen &&
-                order.foods.map((food: any, index: number) => (
-                    <OrderFoodRow
-                        key={`${order.id}-${index}`}
-                        food={food}
-                    />
-                ))}
         </>
     );
 };

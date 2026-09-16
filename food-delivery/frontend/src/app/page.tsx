@@ -1,4 +1,4 @@
-import { FoodList } from "./_components/foodList";
+import { FoodList } from "./_components/foods/foodList";
 import { Header } from "./_components/header";
 import { Hero } from "./_components/hero";
 import { Footer } from "./_components/footer";
@@ -24,7 +24,7 @@ export default function Home() {
                     <FoodList listName={item} />
                 ))}
             </section>
-            <Footer texts={texts}/>
+            <Footer texts={texts} />
         </main>
     )
 }

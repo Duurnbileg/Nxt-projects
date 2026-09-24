@@ -1,28 +1,27 @@
 "use client"
+
 import type { Movie } from "@/app/type";
 import { useEffect, useState } from "react";
 import { Header } from "../_components/header";
 import { MovieCard } from "../_components/movieCard";
 import { Footer } from "../_components/footer";
 import { Paginate } from "../_components/pagination";
-
-
-const API_KEY = "c57b8556952c6312699fd719663951e1"
-const BASE_URL = "https://api.themoviedb.org/3"
-const POPULAR_ENDPOINT = "/movie/popular?language=en-US"
+import { tmdbUrl } from "@/lib/tmdb";
 
 export default function Popular() {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
     const [page, setPage] = useState<number>(1)
     const [totalPages, setTotalPages] = useState<number>(1)
-    const fetchPopularMovies = async () => {
-        const response = await fetch(`${BASE_URL}${POPULAR_ENDPOINT}&page=${page}&api_key=${API_KEY}`)
-        const data = await response.json()
-        setPopularMovies(data.results)
-        setTotalPages(data.total_pages)
-    }
 
     useEffect(() => {
+        const fetchPopularMovies = async () => {
+            const response = await fetch(
+                tmdbUrl("/movie/popular", { language: "en-US", page })
+            )
+            const data = await response.json()
+            setPopularMovies(data.results ?? [])
+            setTotalPages(data.total_pages ?? 1)
+        }
         fetchPopularMovies()
     }, [page])
 
@@ -32,15 +31,13 @@ export default function Popular() {
             <div className="flex flex-col items-start justify-center gap-6 mt-4 px-20 max-[920px]:px-10 max-[410px]:px-4">
                 <p className="text-2xl font-bold">Popular movies</p>
                 <div className="w-full grid grid-cols-5 gap-4 justify-center max-[920px]:grid-cols-3 max-[410px]:grid-cols-2">
-                    {
-                        popularMovies.map((item) => (
-                            <MovieCard key={item.id} movies={item} />
-                        ))
-                    }
+                    {popularMovies.map((item) => (
+                        <MovieCard key={item.id} movies={item} />
+                    ))}
                 </div>
                 <Paginate page={page} setPage={setPage} totalPages={totalPages} />
             </div>
             <Footer />
-        </main >
+        </main>
     );
 }

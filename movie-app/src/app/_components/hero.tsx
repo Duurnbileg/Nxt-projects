@@ -4,9 +4,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Play, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { tmdbImage } from "@/lib/tmdb";
 
 export const Hero = ({ movie }: { movie: Movie[] }) => {
-
     return (
         <Carousel className="relative h-175 max-md:h-[520px] max-sm:h-[460px] w-full overflow-hidden rounded-4xl ">
             <CarouselContent>
@@ -14,12 +14,11 @@ export const Hero = ({ movie }: { movie: Movie[] }) => {
                     <CarouselItem key={item.id} className="h-175 max-md:h-[520px] max-sm:h-[460px] w-full basis-full">
                         <Link href={`/detailed/${item.id}`} className="relative block h-full w-full">
                             <Image
-                                src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                                src={tmdbImage(item.backdrop_path ?? item.poster_path, "original")}
                                 alt={item.title}
                                 fill
                                 priority
                                 className="object-cover"
-                                loading="eager"
                             />
                             <div className="w-full h-full bg-black opacity-40 absolute"></div>
                             <div className="absolute inset-0 z-10 flex items-center max-sm:relative max-md:relative">
@@ -31,7 +30,7 @@ export const Hero = ({ movie }: { movie: Movie[] }) => {
                                     <div className="flex items-center gap-2 mt-4">
                                         <Star className="fill-yellow-400 text-yellow-400 w-5 h-5" />
                                         <p className="text-2xl font-semibold">
-                                            {item.vote_average.toFixed(1)}
+                                            {(item.vote_average ?? 0).toFixed(1)}
                                             <span className="text-gray-300 text-base"> / 10</span>
                                         </p>
                                     </div>

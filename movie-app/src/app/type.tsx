@@ -8,15 +8,15 @@ export type Genres = Genre
 export type Movie = {
     id: number
     title: string
-    poster_path: string
-    backdrop_path: string
+    poster_path: string | null
+    backdrop_path: string | null
     release_date: string
     overview: string
     vote_average: number
     vote_count: number
     genres: Genre[]
     runtime: number
-    total_result: number,
+    total_result: number
     total_pages: number
 }
 

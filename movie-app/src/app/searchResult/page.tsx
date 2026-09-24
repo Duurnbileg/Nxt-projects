@@ -1,19 +1,16 @@
 "use client"
+
+import { Suspense, useEffect, useState } from "react";
 import type { Movie } from "@/app/type";
-import { useEffect, useState } from "react";
 import { Header } from "../_components/header";
 import { MovieCard } from "../_components/movieCard";
 import { Footer } from "../_components/footer";
 import { useSearchParams } from "next/navigation";
 import { Paginate } from "../_components/pagination";
+import { tmdbUrl } from "@/lib/tmdb";
 
-
-const API_KEY = "c57b8556952c6312699fd719663951e1"
-const BASE_URL = "https://api.themoviedb.org/3"
-
-export default function SearchResult() {
+function SearchResultContent() {
     const searchParams = useSearchParams();
-
     const searchValue = searchParams.get("searchValue") || "";
     const [searchedMovies, setSearchedMovies] = useState<Movie[]>([])
     const [page, setPage] = useState<number>(1)
@@ -21,11 +18,16 @@ export default function SearchResult() {
 
     useEffect(() => {
         const fetchSearchedMovies = async () => {
-            const response = await fetch(`${BASE_URL}/search/movie?query=${searchValue}&language=en-US&page=${page}&api_key=${API_KEY}`)
+            const response = await fetch(
+                tmdbUrl("/search/movie", {
+                    query: searchValue,
+                    language: "en-US",
+                    page,
+                })
+            )
             const data = await response.json()
-            console.log("duure",data);
-            setSearchedMovies(data.results)
-            setTotalPages(data.total_pages)
+            setSearchedMovies(data.results ?? [])
+            setTotalPages(data.total_pages ?? 1)
         }
         if (searchValue) {
             fetchSearchedMovies()
@@ -41,15 +43,25 @@ export default function SearchResult() {
                     <p className="text-lg">Search result for <span className="font-bold text-xl">"{searchValue}"</span></p>
                 </div>
                 <div className="w-full grid grid-cols-5 gap-4 justify-center max-[920px]:grid-cols-3 max-[410px]:grid-cols-2">
-                    {
-                        searchedMovies.map((item) => (
-                            <MovieCard key={item.id} movies={item} />
-                        ))
-                    }
+                    {searchedMovies.map((item) => (
+                        <MovieCard key={item.id} movies={item} />
+                    ))}
                 </div>
                 <Paginate page={page} setPage={setPage} totalPages={totalPages} />
             </div>
             <Footer />
-        </main >
+        </main>
     );
+}
+
+export default function SearchResult() {
+    return (
+        <Suspense fallback={
+            <main className="flex min-h-screen items-center justify-center">
+                <p>Loading search results...</p>
+            </main>
+        }>
+            <SearchResultContent />
+        </Suspense>
+    )
 }

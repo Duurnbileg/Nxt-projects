@@ -1,4 +1,6 @@
 "use client"
+
+import { Suspense, useEffect, useState } from "react";
 import { Footer } from "@/app/_components/footer";
 import { Header } from "@/app/_components/header";
 import { MovieCard } from "@/app/_components/movieCard";
@@ -9,16 +11,9 @@ import { Separator } from "@/components/ui/separator";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { tmdbUrl } from "@/lib/tmdb";
 
-
-const API_KEY = "c57b8556952c6312699fd719663951e1"
-const BASE_URL = "https://api.themoviedb.org/3"
-const GENRE_ENDPOINT = "/genre/movie/list?language=en"
-
-const genreApiUrl = `${BASE_URL}${GENRE_ENDPOINT}&api_key=${API_KEY}`
-
-export default function SameGenreMovies() {
+function SameGenreMoviesContent() {
     const { id } = useParams()
     const searchParams = useSearchParams()
     const genreName = searchParams.get("name")
@@ -30,24 +25,31 @@ export default function SameGenreMovies() {
 
     useEffect(() => {
         async function getRelatedMovies() {
-            const response = await fetch(`${BASE_URL}/discover/movie?language=en&with_genres=${id}&page=${page}&api_key=${API_KEY}`);
+            const response = await fetch(
+                tmdbUrl("/discover/movie", {
+                    language: "en",
+                    with_genres: String(id),
+                    page,
+                })
+            );
             const data = await response.json();
-            setRelatedMovies(data.results);
-            setTotalPages(data.total_pages)
-            setTotalResult(data.total_results)
+            setRelatedMovies(data.results ?? []);
+            setTotalPages(data.total_pages ?? 1)
+            setTotalResult(data.total_results ?? 0)
         }
         if (id) {
             getRelatedMovies();
         }
     }, [id, page]);
 
-    const fetchGenreList = async () => {
-        const response = await fetch(genreApiUrl)
-        const data = await response.json()
-        setGenreList(data.genres)
-    }
-
     useEffect(() => {
+        const fetchGenreList = async () => {
+            const response = await fetch(
+                tmdbUrl("/genre/movie/list", { language: "en" })
+            )
+            const data = await response.json()
+            setGenreList(data.genres ?? [])
+        }
         fetchGenreList()
     }, [id])
 
@@ -109,4 +111,16 @@ export default function SameGenreMovies() {
             <Footer />
         </main>
     );
+}
+
+export default function SameGenreMovies() {
+    return (
+        <Suspense fallback={
+            <main className="flex min-h-screen items-center justify-center">
+                <p>Loading genre movies...</p>
+            </main>
+        }>
+            <SameGenreMoviesContent />
+        </Suspense>
+    )
 }

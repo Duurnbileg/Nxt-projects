@@ -2,12 +2,9 @@ import { Button } from "@/components/ui/button"
 import { ChevronRight, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-
-const API_KEY = "c57b8556952c6312699fd719663951e1"
-const BASE_URL = "https://api.themoviedb.org/3"
+import { tmdbImage } from "@/lib/tmdb"
 
 export const MovieDropdown = ({ movie, searchValue }: { movie: Movie[], searchValue: string }) => {
-
     return (
         <div className="absolute z-10 top-7 left-0 w-full">
             {movie.length > 0 && (
@@ -19,18 +16,20 @@ export const MovieDropdown = ({ movie, searchValue }: { movie: Movie[], searchVa
                             className="flex items-center gap-3 p-2 hover:bg-gray-100"
                         >
                             <Image
-                                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                                alt="logo"
+                                src={tmdbImage(item.poster_path, "w185")}
+                                alt={item.title}
                                 width={60}
-                                height={40}
-                                className="object-contain ab rounded-md w-fit"
-                            ></Image>
+                                height={90}
+                                className="object-cover rounded-md"
+                            />
                             <div className="w-full text-black flex flex-col justify-between h-[88px]">
                                 <h1 className="text-base font-semibold leading-6">{item.title}</h1>
                                 <div className="flex justify-between">
                                     <div className="flex text-base items-center gap-1">
                                         <Star className="fill-yellow-400 text-yellow-400 w-4 h-4" />
-                                        <p className="text-base font-semibold">{item.vote_average.toFixed(1)}</p>
+                                        <p className="text-base font-semibold">
+                                            {(item.vote_average ?? 0).toFixed(1)}
+                                        </p>
                                     </div>
                                     <Button variant={"ghost"}>See more
                                         <ChevronRight />
@@ -42,9 +41,8 @@ export const MovieDropdown = ({ movie, searchValue }: { movie: Movie[], searchVa
                     <Link href={`/searchResult?searchValue=${searchValue}`} className="h-[64px] flex justify-end items-center px-4">
                         <Button variant={"ghost"} className="w-full text-black bg-gray-200">See all results</Button>
                     </Link>
-                </div >
-            )
-            }
-        </div >
+                </div>
+            )}
+        </div>
     )
 }

@@ -2,9 +2,9 @@ import type { Credit, Movie } from "@/app/type";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import { tmdbImage } from "@/lib/tmdb";
 
 export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Credit }) => {
-
     const directors = credit?.crew?.filter((item) => item.known_for_department == "Directing")
     const writers = credit?.crew?.filter((item) => item.known_for_department == "Writing")
     const stars = credit?.cast?.filter((item) => item.known_for_department == "Acting")
@@ -13,16 +13,16 @@ export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Cre
         <div className="w-full flex flex-col gap-5 items-start px-8 py-4 max-[410px]:px-4">
             <div className="flex gap-4 w-full">
                 <Image
-                    src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
-                    alt="hero"
+                    src={tmdbImage(movie?.poster_path)}
+                    alt={movie?.title ?? "poster"}
                     loading="eager"
-                    width={290}
+                    width={100}
                     height={148}
                     className="w-[100px] h-[148px] max-[410px]:visible min-[640px]:hidden"
-                ></Image>
+                />
                 <div className="w-full">
                     <div className="flex flex-wrap gap-2">
-                        {movie?.genres.map((item, index) => (
+                        {movie?.genres?.map((item, index) => (
                             <Badge key={index}>{item.name}</Badge>
                         ))}
                     </div>
@@ -33,11 +33,9 @@ export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Cre
                 <div className="flex gap-13 max-sm:gap-4 max-sm:flex-col">
                     <p className="font-bold w-[80px]">Director</p>
                     <div className="flex gap-4 max-sm:flex-wrap">
-                        {directors?.slice(0, 1)?.map((item, index) => {
-                            return (
-                                <span key={index}>{item.name}</span>
-                            )
-                        })}
+                        {directors?.slice(0, 1)?.map((item, index) => (
+                            <span key={index}>{item.name}</span>
+                        ))}
                     </div>
                 </div>
                 <Separator className="w-full" />
@@ -46,11 +44,9 @@ export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Cre
                 <div className="flex gap-13 max-sm:gap-4 max-sm:flex-col">
                     <p className="font-bold w-[80px]">Writers</p>
                     <div className="flex gap-4 max-sm:flex-wrap">
-                        {writers?.slice(0, 2)?.map((item, index) => {
-                            return (
-                                <span key={index}>{item.name}</span>
-                            )
-                        })}
+                        {writers?.slice(0, 2)?.map((item, index) => (
+                            <span key={index}>{item.name}</span>
+                        ))}
                     </div>
                 </div>
                 <Separator className="w-full" />
@@ -59,16 +55,13 @@ export const DetailedContent = ({ movie, credit }: { movie?: Movie, credit?: Cre
                 <div className="flex gap-13 max-sm:gap-4 max-sm:flex-col">
                     <p className="font-bold w-[80px]">Stars</p>
                     <div className="flex gap-4 max-sm:flex-wrap">
-                        {stars?.slice(0, 4)?.map((item, index) => {
-                            return (
-                                <span key={index}>{item.name}</span>
-                            )
-                        })}
+                        {stars?.slice(0, 4)?.map((item, index) => (
+                            <span key={index}>{item.name}</span>
+                        ))}
                     </div>
                 </div>
                 <Separator className="w-full" />
             </div>
         </div>
     )
-
 }

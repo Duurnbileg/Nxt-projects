@@ -11,9 +11,7 @@ import { DetailedHero } from "../components/detailedHero";
 import { Footer } from "@/app/_components/footer";
 import { Credit, Movie } from "@/app/type";
 import { Related } from "../components/related";
-
-const API_KEY = "c57b8556952c6312699fd719663951e1"
-const BASE_URL = "https://api.themoviedb.org/3"
+import { tmdbUrl } from "@/lib/tmdb";
 
 export default function Detailed() {
     const { id } = useParams()
@@ -22,31 +20,31 @@ export default function Detailed() {
     const [movieCredit, setMovieCredit] = useState<Credit>()
 
     useEffect(() => {
+        if (!id) return
+
         async function getMovie() {
-            const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`)
+            const response = await fetch(tmdbUrl(`/movie/${id}`))
             const data = await response.json()
             setDetailedMovie(data);
-        } getMovie();
-    }, [id])
-
-    useEffect(() => {
-        async function getRelatedMovies() {
-            const response = await fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`);
-            const data = await response.json();
-            console.log(data);
-            setRelatedMovies(data.results);
         }
-        getRelatedMovies();
-    }, []);
 
-    useEffect(() => {
+        async function getRelatedMovies() {
+            const response = await fetch(tmdbUrl(`/movie/${id}/similar`));
+            const data = await response.json();
+            setRelatedMovies(data.results ?? []);
+        }
+
         async function getCredits() {
-            const response = await fetch(`${BASE_URL}/movie/${id}/credits?language=en-US&api_key=${API_KEY}`)
+            const response = await fetch(
+                tmdbUrl(`/movie/${id}/credits`, { language: "en-US" })
+            )
             const data = await response.json()
-            console.log(data);
             setMovieCredit(data)
         }
-        getCredits()
+
+        getMovie();
+        getRelatedMovies();
+        getCredits();
     }, [id])
 
     return (
@@ -72,7 +70,7 @@ export default function Detailed() {
                     </div>
                 </div>
                 <Footer />
-            </div >
-        </main >
+            </div>
+        </main>
     );
 }

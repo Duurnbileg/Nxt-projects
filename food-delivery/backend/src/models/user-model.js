@@ -3,9 +3,13 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema({
     email: {
         type: String,
-        ref: "user",
+        required: true,
+        unique: true,
     },
-    password: String,
+    password: {
+        type: String,
+        required: true,
+    },
     phoneNumber: String,
     address: String,
     role: {

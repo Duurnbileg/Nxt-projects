@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { Edit, Pencil, Plus } from "lucide-react"
 import Image from "next/image"
 import { CategoryType } from "./foodMenu";
+import { EditFood } from "./editFood";
 
 export type FoodType = {
     foodName: string;
@@ -14,26 +13,24 @@ export type FoodType = {
 
 export const AdminFoodCard = ({ food }: { food: FoodType }) => {
     return (
-        <main className="flex w-[270px] flex-col overflow-hidden rounded-2xl border p-2">
+        <main className="flex w-[270px] h-full flex-col justify-between overflow-hidden rounded-2xl border p-2">
             <div className="relative w-full">
                 <Image
-                    src="/food-image.png"
+                    src={food.image || "/food-image.png"}
                     alt="Description"
-                    width={360}
-                    height={210}
+                    width={900}
+                    height={600}
                     loading="eager"
-                    className="object-fill w-full"
+                    className="object-cover w-full h-[150px] rounded-lg"
                 />
-                <Button className="absolute bottom-3 right-3 rounded-full w-12 h-12 bg-white hover:bg-zinc-200">
-                    <Pencil className="text-red-500" />
-                </Button>
+                <EditFood food={food} />
             </div>
-            <div className="w-full flex flex-col gap-1 p-4">
+            <div className="w-full h-fit flex flex-col gap-1 p-4">
                 <div className="flex justify-between">
-                    <p className="text-lg font-semibold text-red-400">Finger Food</p>
-                    <p className="text-base font-semibold">12.99$</p>
+                    <p className="text-lg font-semibold text-red-400">{food.foodName}</p>
+                    <p className="text-base font-semibold">{food.price}<span>₮</span></p>
                 </div>
-                <p className="text-xs line-clamp-2">Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar.</p>
+                <p className="text-xs line-clamp-2">{food.ingredients}</p>
             </div>
         </main>
     )

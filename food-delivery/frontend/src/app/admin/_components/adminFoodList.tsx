@@ -11,10 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ImagePlus, Plus } from "lucide-react";
 import { AdminFoodCard } from "./adminFoodCard";
-import { api } from "@/lib/api";
+import { API_URL } from "@/lib/api";
 import { CategoryType } from "./foodMenu";
-
-const UPLOAD_PRESET = "food_app";
 
 const inputClass =
     "h-10 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/10";
@@ -36,7 +34,7 @@ export const AdminFoodList = ({
     const getFoods = async () => {
         try {
             const response = await fetch(
-                `${api.category}/${category._id}`,
+                `${API_URL}/category/${category._id}`,
             );
             const data = await response.json();
             setFoods(data.foods);
@@ -51,7 +49,7 @@ export const AdminFoodList = ({
             return;
         }
         try {
-            const res = await fetch(api.API, {
+            const res = await fetch(`${API_URL}/food`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -64,7 +62,7 @@ export const AdminFoodList = ({
                     category: category._id,
                 }),
             });
-            if (!res.ok) throw new Error();
+            if (!res.ok) throw new Error()
             toast.success("Food created");
             setFoodName("");
             setFoodPrice("");
@@ -78,24 +76,35 @@ export const AdminFoodList = ({
     };
 
     const uploadToCloudinary = async (file: File) => {
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+        if (!cloudName || !uploadPreset) {
+            throw new Error("Cloudinary configuration is missing");
+        }
+
         const formData = new FormData();
-
         formData.append("file", file);
-        formData.append("upload_preset", UPLOAD_PRESET);
-
+        formData.append("upload_preset", uploadPreset);
         try {
             const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/uploadd`,
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
                 {
                     method: "POST",
                     body: formData,
                 },
             );
             const data = await response.json();
-            if (!data.secure_url) throw new Error();
+            if (!response.ok) {
+                throw new Error(
+                    data.error?.message || "Cloudinary upload failed",
+                );
+            }
+            if (!data.secure_url) {
+                throw new Error("secure_url not found");
+            }
             return data.secure_url;
         } catch (error) {
-            toast.error("Image upload failed");
+            console.error("Cloudinary upload error:", error);
             throw error;
         }
     };
@@ -110,14 +119,16 @@ export const AdminFoodList = ({
             const url = await uploadToCloudinary(file);
             setImgUrl(url);
             toast.success("Image uploaded");
-        } catch {
-            // toast already shown
+        } catch (error) {
+            toast.error("Image upload failed");
+        } finally {
+            setUploading(false);
         }
-        setUploading(false);
     };
-    
+
     useEffect(() => {
         getFoods();
+        createFood();
     }, []);
 
     return (
@@ -130,13 +141,13 @@ export const AdminFoodList = ({
                     {category.foodCount}
                 </span>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 h-[244px]">
                 <Dialog>
-                    <DialogTrigger className="group w-[270px] h-[241px] flex aspect-3/4 flex-col items-center justify-center rounded-2xl border border-dashed border-red-200 bg-red-50/60 text-red-500 transition hover:border-red-400 hover:bg-red-50">
+                    <DialogTrigger className="group w-[270px] h-full flex aspect-3/4 flex-col items-center justify-center rounded-2xl border border-dashed border-red-200 bg-red-50/60 text-red-500 transition hover:border-red-400 hover:bg-red-50">
                         <div className="flex size-10 items-center justify-center rounded-full bg-red-500 text-white shadow-sm transition group-hover:scale-105">
                             <Plus className="size-5" />
                         </div>
-                        <p className="mt-3 text-sm font-medium">Add food</p>
+                        <p className="mt-3 text-sm font-medium text-black">Add new dish to <br /> Appetizers</p>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
                         <DialogHeader>
@@ -194,7 +205,7 @@ export const AdminFoodList = ({
                                         <input
                                             className="hidden"
                                             type="file"
-                                            placeholder="Food Image"
+                                            accept="image/*"
                                             onChange={handleImgUpload}
                                         />
                                     </label>

@@ -17,6 +17,7 @@ const OrderSchema = new Schema({
     },
     totalPrice: Number,
     foodOrderItems: [OrderItemSchema],
+    address: String,
     status: {
         type: String,
         enum: ["PENDING", "CANCELED", "DELIVERED"],

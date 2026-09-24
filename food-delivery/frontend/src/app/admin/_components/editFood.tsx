@@ -14,9 +14,9 @@ import { FoodType } from "./adminFoodCard";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CategoryType } from "./foodMenu";
-
-const UPLOAD_PRESET = "ml_default";
-const CLOUD_NAME = "tmnqu3q8";
+import { Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { API_URL } from "@/lib/api";
 
 export const EditFood = ({ food }: { food: FoodType }) => {
     const [editingFood, setEditingFood] = useState(food.foodName);
@@ -29,7 +29,7 @@ export const EditFood = ({ food }: { food: FoodType }) => {
 
     const getCategory = async () => {
         try {
-            const res = await fetch("http://localhost:8000/category");
+            const res = await fetch(`${API_URL}/category`);
             const data = await res.json();
             setCategories(data.categories);
         } catch {
@@ -39,7 +39,7 @@ export const EditFood = ({ food }: { food: FoodType }) => {
 
     const editFood = async () => {
         try {
-            const res = await fetch("http://localhost:8000/food", {
+            const res = await fetch(`${API_URL}/food`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,24 +60,57 @@ export const EditFood = ({ food }: { food: FoodType }) => {
         }
     };
 
+    const deleteFood = async () => {
+        try {
+            const res = await fetch(`${API_URL}/food`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: food._id,
+                }),
+            });
+            if (!res.ok) throw new Error();
+            toast.success("Food deleted");
+        } catch {
+            toast.error("Failed to delete food");
+        }
+    };
+
     const uploadToCloudinary = async (file: File) => {
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+        console.log("Cloudinary config:", { cloudName, uploadPreset });
+        if (!cloudName || !uploadPreset) {
+            throw new Error("Cloudinary configuration is missing");
+        }
+
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", UPLOAD_PRESET);
-
+        formData.append("upload_preset", uploadPreset);
+        console.log("Uploading to Cloudinary with formData:", formData);
         try {
             const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
                 {
                     method: "POST",
                     body: formData,
                 },
             );
             const data = await response.json();
-            if (!data.secure_url) throw new Error();
+            if (!response.ok) {
+                throw new Error(
+                    data.error?.message || "Cloudinary upload failed",
+                );
+            }
+            if (!data.secure_url) {
+                throw new Error("secure_url not found");
+            }
+            console.log("Cloudinary upload successful, secure_url:", data);
             return data.secure_url;
         } catch (error) {
-            toast.error("Image upload failed");
+            console.error("Cloudinary upload error:", error);
             throw error;
         }
     };
@@ -106,8 +139,8 @@ export const EditFood = ({ food }: { food: FoodType }) => {
     }, []);
     return (
         <Dialog>
-            <DialogTrigger className="w-9 h-9 bg-white rounded-full absolute z-10 top-20 left-44 flex items-center justify-center">
-                +
+            <DialogTrigger className="w-10 h-10 bg-white rounded-full absolute z-10 top-25 left-50 flex items-center justify-center">
+                <Pencil className="text-red-400 w-5 h-5" />
             </DialogTrigger>
             <DialogContent>
                 <div className="flex flex-col w-full max-h-[600px] overflow-y-auto bg-white rounded-lg gap-3 ">
@@ -123,15 +156,10 @@ export const EditFood = ({ food }: { food: FoodType }) => {
                         <div className="w-30 text-xs text-gray-400">Dish category</div>
                         <Select
                             value={editCategory}
-                            onValueChange={(value) => setEditCategory(value as string)}
+                            onValueChange={(value) => setEditCategory(value)}
                         >
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select category">
-                                    {(value: string) =>
-                                        categories.find((item) => item._id === value)
-                                            ?.categoryName ?? food.category.categoryName
-                                    }
-                                </SelectValue>
+                                <SelectValue placeholder="Select category" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -173,18 +201,28 @@ export const EditFood = ({ food }: { food: FoodType }) => {
                                     />
                                 )
                             )}
-                            <Input type="file" onChange={handleImgUpload} />
+                            <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImgUpload}
+                            />
                         </div>
                     </div>
-
-                    <div className="flex justify-between">
-                        <div>DEL</div>
-                        <div
-                            className="bg-black text-white px-4 py-2.5 rounded-lg"
+                    <div className="w-full flex gap-2">
+                        <Button
+                            variant="outline"
+                            className="w-1/2"
+                            onClick={() => deleteFood()}
+                        >
+                            Delete
+                        </Button>
+                        <Button
+                            variant="default"
+                            className="w-1/2"
                             onClick={() => editFood()}
                         >
                             Save Changes
-                        </div>
+                        </Button>
                     </div>
                 </div>
             </DialogContent>

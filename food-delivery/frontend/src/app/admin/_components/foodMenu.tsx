@@ -7,8 +7,8 @@ import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { api } from "@/lib/api";
 import { AdminFoodList } from "./adminFoodList";
+import { API_URL } from "@/lib/api";
 
 export type CategoryType = {
     categoryName: string;
@@ -23,9 +23,8 @@ export const FoodMenu = () => {
 
     const getCategory = async () => {
         try {
-            const res = await fetch(api.category);
+            const res = await fetch(`${API_URL}/category`);
             const data = await res.json();
-            console.log(data);
             setCategories(data.categories);
             setTotalFoods(data.allFoodCount);
         } catch {
@@ -40,7 +39,7 @@ export const FoodMenu = () => {
             return;
         }
         try {
-            const res = await fetch(api.category, {
+            const res = await fetch(`${API_URL}/category`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +59,7 @@ export const FoodMenu = () => {
 
     const deleteCategory = async (categoryId: string) => {
         try {
-            const res = await fetch(api.category, {
+            const res = await fetch(`${API_URL}/category`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

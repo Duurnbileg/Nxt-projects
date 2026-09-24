@@ -1,15 +1,18 @@
 import Image from "next/image";
-import { Step1 } from "./components/step-1";
+import { Login } from "./components/login";
 
-export default function Login() {
+export default function LoginPage() {
     return (
-        <main className="flex items-center justify-center min-h-screen py-2">
-            <Step1 />
+        <main className="w-full h-screen flex justify-center gap-4 min-h-screen p-2">
+            <div className="flex justify-center items-center w-2/5 gap-6 rounded-lg">
+                <Login />
+            </div>
             <Image
                 src="/Login.png"
                 alt="Login"
-                width={400}
-                height={400}
+                width={600}
+                height={600}
+                className="h-full w-3/5 object-cover rounded-2xl"
             />
         </main>
     )

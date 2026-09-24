@@ -1,6 +1,10 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(
+    /\/+$/,
+    "",
+);
 
-export const api = {
-    API:`${API_URL}`,
-    category: `${API_URL}/category`,
-};
+if (!API_URL && typeof window !== "undefined") {
+    console.error(
+        "NEXT_PUBLIC_API_URL is missing. Set it in Vercel Project Settings → Environment Variables.",
+    );
+}

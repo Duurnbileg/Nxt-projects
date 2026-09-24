@@ -11,7 +11,12 @@ import { Separator } from "@/components/ui/separator";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
+const GENRE_ENDPOINT = "/genre/movie/list?language=en"
+
+const genreApiUrl = `${BASE_URL}${GENRE_ENDPOINT}&api_key=${API_KEY}`
 
 function SameGenreMoviesContent() {
     const { id } = useParams()
@@ -25,13 +30,7 @@ function SameGenreMoviesContent() {
 
     useEffect(() => {
         async function getRelatedMovies() {
-            const response = await fetch(
-                tmdbUrl("/discover/movie", {
-                    language: "en",
-                    with_genres: String(id),
-                    page,
-                })
-            );
+            const response = await fetch(`${BASE_URL}/discover/movie?language=en&with_genres=${id}&page=${page}&api_key=${API_KEY}`);
             const data = await response.json();
             setRelatedMovies(data.results ?? []);
             setTotalPages(data.total_pages ?? 1)
@@ -44,9 +43,7 @@ function SameGenreMoviesContent() {
 
     useEffect(() => {
         const fetchGenreList = async () => {
-            const response = await fetch(
-                tmdbUrl("/genre/movie/list", { language: "en" })
-            )
+            const response = await fetch(genreApiUrl)
             const data = await response.json()
             setGenreList(data.genres ?? [])
         }

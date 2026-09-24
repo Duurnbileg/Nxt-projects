@@ -4,7 +4,9 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import { MovieDropdown } from "./movieDropdown"
-import { tmdbUrl } from "@/lib/tmdb"
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
 
 export const SearchInput = () => {
     const [searchValue, setSearchValue] = useState<string>("")
@@ -16,13 +18,7 @@ export const SearchInput = () => {
                 setSearchData([]);
                 return;
             }
-            const response = await fetch(
-                tmdbUrl("/search/movie", {
-                    query: searchValue,
-                    language: "en-US",
-                    page: 1,
-                })
-            )
+            const response = await fetch(`${BASE_URL}/search/movie?query=${searchValue}&language=en-US&page=1&api_key=${API_KEY}`)
             const data = await response.json()
             setSearchData(data.results ?? [])
         }, 500);

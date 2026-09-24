@@ -7,16 +7,19 @@ import { Separator } from "@/components/ui/separator";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
+const GENRE_ENDPOINT = "/genre/movie/list?language=en"
+
+const genreApiUrl = `${BASE_URL}${GENRE_ENDPOINT}&api_key=${API_KEY}`
 
 export const GenreDropDown = () => {
     const [genreList, setGenreList] = useState<Genre[]>([])
 
     useEffect(() => {
         const fetchGenreList = async () => {
-            const response = await fetch(
-                tmdbUrl("/genre/movie/list", { language: "en" })
-            )
+            const response = await fetch(genreApiUrl)
             const data = await response.json()
             setGenreList(data.genres ?? [])
         }

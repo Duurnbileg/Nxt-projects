@@ -7,7 +7,9 @@ import { MovieCard } from "../_components/movieCard";
 import { Footer } from "../_components/footer";
 import { useSearchParams } from "next/navigation";
 import { Paginate } from "../_components/pagination";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
 
 function SearchResultContent() {
     const searchParams = useSearchParams();
@@ -18,13 +20,7 @@ function SearchResultContent() {
 
     useEffect(() => {
         const fetchSearchedMovies = async () => {
-            const response = await fetch(
-                tmdbUrl("/search/movie", {
-                    query: searchValue,
-                    language: "en-US",
-                    page,
-                })
-            )
+            const response = await fetch(`${BASE_URL}/search/movie?query=${searchValue}&language=en-US&page=${page}&api_key=${API_KEY}`)
             const data = await response.json()
             setSearchedMovies(data.results ?? [])
             setTotalPages(data.total_pages ?? 1)

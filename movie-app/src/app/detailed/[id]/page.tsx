@@ -11,7 +11,9 @@ import { DetailedHero } from "../components/detailedHero";
 import { Footer } from "@/app/_components/footer";
 import { Credit, Movie } from "@/app/type";
 import { Related } from "../components/related";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
 
 export default function Detailed() {
     const { id } = useParams()
@@ -23,21 +25,19 @@ export default function Detailed() {
         if (!id) return
 
         async function getMovie() {
-            const response = await fetch(tmdbUrl(`/movie/${id}`))
+            const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`)
             const data = await response.json()
             setDetailedMovie(data);
         }
 
         async function getRelatedMovies() {
-            const response = await fetch(tmdbUrl(`/movie/${id}/similar`));
+            const response = await fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`);
             const data = await response.json();
             setRelatedMovies(data.results ?? []);
         }
 
         async function getCredits() {
-            const response = await fetch(
-                tmdbUrl(`/movie/${id}/credits`, { language: "en-US" })
-            )
+            const response = await fetch(`${BASE_URL}/movie/${id}/credits?language=en-US&api_key=${API_KEY}`)
             const data = await response.json()
             setMovieCredit(data)
         }

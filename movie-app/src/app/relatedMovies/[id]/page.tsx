@@ -7,7 +7,9 @@ import { Paginate } from "@/app/_components/pagination";
 import type { Movie } from "@/app/type";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
 
 export default function RelatedMovies() {
     const { id } = useParams()
@@ -18,9 +20,7 @@ export default function RelatedMovies() {
     useEffect(() => {
         async function getRelatedMovies() {
             if (!id) return
-            const response = await fetch(
-                tmdbUrl(`/movie/${id}/similar`, { page })
-            );
+            const response = await fetch(`${BASE_URL}/movie/${id}/similar?page=${page}&api_key=${API_KEY}`);
             const data = await response.json();
             setRelatedMovies(data.results ?? []);
             setTotalPages(data.total_pages ?? 1)

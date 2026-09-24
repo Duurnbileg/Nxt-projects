@@ -6,7 +6,10 @@ import { Header } from "../_components/header";
 import { MovieCard } from "../_components/movieCard";
 import { Footer } from "../_components/footer";
 import { Paginate } from "../_components/pagination";
-import { tmdbUrl } from "@/lib/tmdb";
+
+const API_KEY = "c57b8556952c6312699fd719663951e1"
+const BASE_URL = "https://api.themoviedb.org/3"
+const UPCOMING_ENDPOINT = "/movie/upcoming?language=en-US"
 
 export default function Upcoming() {
     const [upComingMovies, setUpcomingMovies] = useState<Movie[]>([])
@@ -15,9 +18,7 @@ export default function Upcoming() {
 
     useEffect(() => {
         const fetchUpcomingMovies = async () => {
-            const response = await fetch(
-                tmdbUrl("/movie/upcoming", { language: "en-US", page })
-            )
+            const response = await fetch(`${BASE_URL}${UPCOMING_ENDPOINT}&page=${page}&api_key=${API_KEY}`)
             const data = await response.json()
             setUpcomingMovies(data.results ?? [])
             setTotalPages(data.total_pages ?? 1)
